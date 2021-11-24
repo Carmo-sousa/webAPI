@@ -45,3 +45,19 @@ func CreateUser(c *gin.Context) {
 	})
 
 }
+
+func ShowAllUsers(c *gin.Context) {
+	db := database.GetDataBase()
+	var users []models.User
+
+	err := db.Find(&users).Error
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
+}
